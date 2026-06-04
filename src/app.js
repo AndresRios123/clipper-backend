@@ -9,7 +9,7 @@ const app = express();
 
 //Middlewares globales
 app.use(cors());
-app.use(exxpress.json());
+app.use(express.json());
 app.use(morgan('dev'));
 
 //Ruta de health check
