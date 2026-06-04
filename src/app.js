@@ -14,7 +14,7 @@ app.use(morgan('dev'));
 
 //Ruta de health check
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() })
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 //Exportar
