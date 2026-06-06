@@ -4,10 +4,10 @@ const User = require('../models/User');
 
 
 const seedAdmin = async () => {
-    const userFounded = await User.findOne({rol: 'admin'});
+    const userFound = await User.findOne({rol: 'admin'});
 
-    if(userFounded){
-        return userFounded;
+    if(userFound){
+        return userFound;
     }else{
         const user = new User({
             nombre: 'admin',
@@ -22,5 +22,6 @@ const seedAdmin = async () => {
         return user;
     }
 }
+
 
 module.exports = seedAdmin;
