@@ -32,3 +32,30 @@ const register = async (req, res) => {
         res.status(500).json({message : error.message});
     }
 }
+
+const login = async (req, res) => {
+    try{
+        //Paso 1: sacar email y password del body
+        const {email, password} = req.body;
+
+        //PASO 2: buscar el usuario por email
+        const user = await User.findOne({email});
+
+        // Paso 3: si el usuario existe y la contraseña coincide
+        if(user && await (user.comparePassword(password))){
+            return res.status(200).json({
+                _id: user.id,
+                nombre: user.nombre,
+                email: user.email,
+                rol: user.rol,
+                token: generateToken(user.id)
+            })
+        }else{
+            return res.status(401).json({message: 'Email o contraseña incorrectos'});
+        }
+    } catch(error){
+        res.status(500).json({message: error.message});
+    }
+}
+
+module.exports = {register, login}
