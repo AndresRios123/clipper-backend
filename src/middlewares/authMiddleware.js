@@ -3,7 +3,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const project = async (req, res) => {
+const protect = async (req, res, next) => {
     try {
         let token
 
@@ -38,4 +38,4 @@ const project = async (req, res) => {
     }
 }
 
-module.exports = { project };
+module.exports = { protect };

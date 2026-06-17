@@ -2,7 +2,6 @@
 
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
-const genereateToken = require('../utils/generateToken');
 
 const register = async (req, res) => {
     try {
@@ -10,7 +9,7 @@ const register = async (req, res) => {
         const {nombre, email, password, rol} = req.body;
 
         //PASO 2: verificar si ya existe un usuario con ese email
-        const userExist = User.findOne({email});
+        const userExist = await User.findOne({email});
 
         //PASO 3: Si existe respondemos con error 400
         if(userExist){
