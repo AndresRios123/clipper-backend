@@ -1,3 +1,5 @@
+// Un controlador es una función que Express ejecuta cuando alguien visita una ruta
+
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const genereateToken = require('../utils/generateToken');
