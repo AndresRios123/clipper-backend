@@ -1,4 +1,6 @@
-Routes:
+# Routes:
+
+## Authentication
 
 - Register
    - Método: POST
