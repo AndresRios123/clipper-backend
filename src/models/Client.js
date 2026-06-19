@@ -15,12 +15,17 @@ const clientSchema = new mongoose.Schema({
         type: String,
         maxLength: 254,
         unique: true,
+        sparse: true,
+        lowercase: true,
+        trim: true,
     },
     direccion: {
         type: String,
+        trim: true,
     },
     notas: {
         type: String,
+        trim: true,
     },
 },
 {timestamps: true});
