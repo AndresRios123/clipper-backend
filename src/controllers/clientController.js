@@ -29,4 +29,13 @@ const register = async (req, res) => {
     }
 }
 
+const getClients = async (req, res) => {
+    try {
+        const clients = await Client.find({})
+        return res.json({clients})
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
+
 module.exports = {register};
