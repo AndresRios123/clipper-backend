@@ -38,7 +38,7 @@ const getClients = async (req, res) => {
     }
 }
 
-const getUserById = async (req, res) => {
+const getClientById = async (req, res) => {
     try {
         const client = await Client.findById(req.params.id);
         if(!client){
@@ -51,4 +51,22 @@ const getUserById = async (req, res) => {
     }
 }
 
-module.exports = {createClient, getClients};
+const updateClient = async (req, res) => {
+    try {
+        const client = await Client.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new: true, runValidators: true}
+        )
+
+        if(!client){
+            return res.status(404).json({message: 'Cliente no encontrado'});
+        }
+
+        return res.json(client);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+}
+
+module.exports = {createClient, getClients, getClientById, updateClient};
