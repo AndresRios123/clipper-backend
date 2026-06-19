@@ -10,6 +10,7 @@ Routes:
           "password": "123456"
         }
 
+
 - Login:
   - Método: POST
   - URL: http://localhost:3000/api/auth/login
@@ -18,6 +19,7 @@ Routes:
         "email": "barbero1@mail.com",
         "password": "123456"
       }
+
 
 - Get All Users (requires Admin LogIn):
   - Métofo: GET
