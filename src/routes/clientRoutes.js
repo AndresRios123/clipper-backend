@@ -1,7 +1,7 @@
 //Rutas para clientes
 const express = require('express');
 const router = express.Router();
-const {createClient, getClients} = require('../controllers/clientController');
+const {createClient, getClients, getClientById, updateClient, deleteClient} = require('../controllers/clientController');
 const { protect } = require('../middlewares/authMiddleware');
 const { authorize } = require('../middlewares/roleMiddleware');
 
