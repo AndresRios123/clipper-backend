@@ -38,4 +38,4 @@ const getClients = async (req, res) => {
     }
 }
 
-module.exports = {register};
+module.exports = {register, getClients};
