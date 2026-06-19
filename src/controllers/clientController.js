@@ -1,6 +1,6 @@
 const Client = require('../models/Client');
 
-const register = async (req, res) => {
+const createClient = async (req, res) => {
     try {
         const {nombre, telefono, email, direccion, notas} = req.body;
 
@@ -38,4 +38,4 @@ const getClients = async (req, res) => {
     }
 }
 
-module.exports = {register, getClients};
+module.exports = {createClient, getClients};
