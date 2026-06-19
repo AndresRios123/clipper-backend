@@ -38,4 +38,17 @@ const getClients = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    try {
+        const client = await Client.findById(req.params.id);
+        if(!client){
+            return res.status(400).json({message: 'Cliente no encontrado'});
+        }else{
+            return res.json(client)
+        }
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
+
 module.exports = {createClient, getClients};
