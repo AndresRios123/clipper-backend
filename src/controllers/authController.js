@@ -59,4 +59,13 @@ const login = async (req, res) => {
     }
 }
 
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).select('-password')
+        res.json(users)
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {register, login}
