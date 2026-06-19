@@ -18,3 +18,9 @@ Routes:
         "email": "barbero1@mail.com",
         "password": "123456"
       }
+
+- Get All Users (requires Admin LogIn):
+  - Métofo: GET
+  - URL: http://localhost:3000/api/auth/users
+  - Headers: - Header: Authorization - Value: Bearer <token>
+  
