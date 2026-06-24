@@ -26,7 +26,7 @@ const barberySchema = new mongoose.Schema({
     },
     duenio: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Usuario',
+        ref: 'User',
         required: true,
     }
 },
