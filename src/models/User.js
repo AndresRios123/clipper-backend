@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     activo: {
         type: Boolean,
         default: true
+    },
+    barberia: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Barbery'
     }
 },
 {timestamps: true});
