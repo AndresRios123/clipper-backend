@@ -1,7 +1,7 @@
 // Modelo para barberías
 const mongoose = require('mongoose')
 
-const barberySchema = new mongoose.Schema({
+const barberShopSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required: true
@@ -31,6 +31,6 @@ const barberySchema = new mongoose.Schema({
 },
 {timestamps: true});
 
-const Barbery = mongoose.model('Barbery', barberySchema);
+const Barbershop = mongoose.model('Barbery', barberShopSchema);
 
-module.exports = Barbery
+module.exports = Barbershop
