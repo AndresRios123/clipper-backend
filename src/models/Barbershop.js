@@ -31,6 +31,6 @@ const barberShopSchema = new mongoose.Schema({
 },
 {timestamps: true});
 
-const Barbershop = mongoose.model('Barbery', barberShopSchema);
+const Barbershop = mongoose.model('Barbershop', barberShopSchema);
 
 module.exports = Barbershop

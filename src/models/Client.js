@@ -30,6 +30,7 @@ const clientSchema = new mongoose.Schema({
     barberia: {
         type: mongoose.Schema.ObjectId,
         ref: 'Barbershop',
+        required: true,
     },
 },
 {timestamps: true});
