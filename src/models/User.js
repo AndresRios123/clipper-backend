@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     },
     barberia: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Barbery'
+        ref: 'Barbershop'
     }
 },
 {timestamps: true});
