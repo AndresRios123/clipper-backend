@@ -26,7 +26,6 @@ const barberShopSchema = new mongoose.Schema({
     duenio: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-        required: true,
     }
 },
 {timestamps: true});
