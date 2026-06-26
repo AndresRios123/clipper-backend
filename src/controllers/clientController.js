@@ -1,18 +1,28 @@
 const Client = require('../models/Client');
 
+// Crea un cliente vinculado a la barbería del usuario autenticado
 const createClient = async (req, res) => {
     try {
         const {nombre, telefono, email, direccion, notas} = req.body;
 
         if (email) {
-            const clientExist = await Client.findOne({email});
+            // Verificar que el email no exista en la misma barbería
+            const clientExist = await Client.findOne({ email, barberia: req.user.barberia });
     
             if (clientExist) {
-                return res.status(400).json({message: 'El email ingresado ya se encuentra registrado'});
+                return res.status(400).json({message: 'El email ingresado ya se encuentra registrado en esta barbería'});
             }             
         }
 
-        const cliente = await Client.create({nombre, telefono, email, direccion, notas});
+        // Asigna automáticamente la barbería del usuario que crea el cliente
+        const cliente = await Client.create({
+            nombre,
+            telefono,
+            email,
+            direccion,
+            notas,
+            barberia: req.user.barberia
+        });
 
         if(cliente){
             return res.status(201).json({
@@ -29,32 +39,35 @@ const createClient = async (req, res) => {
     }
 }
 
+// Lista solo los clientes de la barbería del usuario autenticado
 const getClients = async (req, res) => {
     try {
-        const clients = await Client.find({})
+        const clients = await Client.find({ barberia: req.user.barberia })
         return res.json({clients})
     } catch (error) {
         return res.status(500).json({error: error.message});
     }
 }
 
+// Obtiene un cliente solo si pertenece a la barbería del usuario
 const getClientById = async (req, res) => {
     try {
-        const client = await Client.findById(req.params.id);
+        const client = await Client.findOne({ _id: req.params.id, barberia: req.user.barberia });
         if(!client){
             return res.status(400).json({message: 'Cliente no encontrado'});
-        }else{
-            return res.json(client)
         }
+
+        return res.json(client)
     } catch (error) {
         return res.status(500).json({error: error.message});
     }
 }
 
+// Actualiza un cliente solo si pertenece a la barbería del usuario
 const updateClient = async (req, res) => {
     try {
-        const client = await Client.findByIdAndUpdate(
-            req.params.id,
+        const client = await Client.findOneAndUpdate(
+            { _id: req.params.id, barberia: req.user.barberia },
             req.body,
             {new: true, runValidators: true}
         )
@@ -69,9 +82,10 @@ const updateClient = async (req, res) => {
     }
 }
 
+// Elimina un cliente solo si pertenece a la barbería del usuario
 const deleteClient = async (req, res) => {
     try {
-        const cliente = await Client.findByIdAndDelete(req.params.id);
+        const cliente = await Client.findOneAndDelete({ _id: req.params.id, barberia: req.user.barberia });
         if(!cliente){
             return res.status(404).json({message: 'Cliente no encontrado'});
         }

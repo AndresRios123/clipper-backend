@@ -35,6 +35,8 @@ const register = async (req, res) => {
     }
 }
 
+// Registra un dueño y crea su barbería en una sola operación
+// Orden: primero barbería (sin dueño), luego usuario admin, luego se actualiza el dueño
 const registerOwner = async (req, res) => {
     try {
         const { nombre, email, password, barberia } = req.body;
@@ -44,14 +46,16 @@ const registerOwner = async (req, res) => {
             return res.status(400).json({ message: 'El email ya está registrado' });
         }
 
+        // 1. Crear la barbería primero (necesitamos su _id para el usuario)
         const newBarbershop = await Barbershop.create({
             nombre: barberia.nombre,
             direccion: barberia.direccion,
             telefono: barberia.telefono,
             email: barberia.email,
-            duenio: null
+            duenio: null // temporal, se actualiza después de crear el user
         });
 
+        // 2. Crear el usuario admin vinculado a la barbería
         const user = await User.create({
             nombre,
             email,
@@ -60,6 +64,7 @@ const registerOwner = async (req, res) => {
             barberia: newBarbershop._id
         });
 
+        // 3. Actualizar la barbería con el ID del dueño
         newBarbershop.duenio = user._id;
         await newBarbershop.save();
 
