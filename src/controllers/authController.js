@@ -1,6 +1,7 @@
 // Un controlador es una función que Express ejecuta cuando alguien visita una ruta
 
 const User = require('../models/User');
+const Barbershop = require('../models/Barbershop');
 const generateToken = require('../utils/generateToken');
 
 const register = async (req, res) => {
@@ -31,6 +32,55 @@ const register = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({message : error.message});
+    }
+}
+
+const registerOwner = async (req, res) => {
+    try {
+        const { nombre, email, password, barberia } = req.body;
+
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'El email ya está registrado' });
+        }
+
+        const newBarbershop = await Barbershop.create({
+            nombre: barberia.nombre,
+            direccion: barberia.direccion,
+            telefono: barberia.telefono,
+            email: barberia.email,
+            duenio: null
+        });
+
+        const user = await User.create({
+            nombre,
+            email,
+            password,
+            rol: 'admin',
+            barberia: newBarbershop._id
+        });
+
+        newBarbershop.duenio = user._id;
+        await newBarbershop.save();
+
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                nombre: user.nombre,
+                email: user.email,
+                rol: user.rol,
+                token: generateToken(user._id),
+                barberia: {
+                    _id: newBarbershop._id,
+                    nombre: newBarbershop.nombre,
+                    direccion: newBarbershop.direccion,
+                    telefono: newBarbershop.telefono,
+                    email: newBarbershop.email
+                }
+            })
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -68,4 +118,4 @@ const getUsers = async (req, res) => {
     }
 }
 
-module.exports = {register, login, getUsers}
+module.exports = {register, registerOwner, login, getUsers}
