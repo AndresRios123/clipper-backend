@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const authRoutes = require('./routes/authRoutes');
 const clientRoutes = require('./routes/clientRoutes');
 const barberRoutes = require('./routes/barberRoutes');
+const appointmentRoutes = require('./routes/appointmentRoutes');
 
 //Crear la app
 const app = express();
@@ -17,6 +18,7 @@ app.use(morgan('dev'));
 
 app.use( '/api/auth', authRoutes);
 app.use('/api', clientRoutes);
+app.use('/api', appointmentRoutes);
 app.use('/api/barbers', barberRoutes);
 
 //Ruta de health check
