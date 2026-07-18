@@ -88,3 +88,15 @@ const createAppointment = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
+
+const getAppointments = async (req, res) => {
+    try {
+        const appointments = await Appointment.find({barberia: req.user.barberia})
+            .populate('cliente', 'nombre telefono')
+            .populate('barbero', 'nombre email');
+        return res.json({appointments})
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+
+}
