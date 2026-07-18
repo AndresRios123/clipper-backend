@@ -89,9 +89,14 @@ const createAppointment = async (req, res) => {
     }
 }
 
+// Lista todas las citas de la barbería del usuario autenticado
+// Los datos de cliente y barbero vienen poblados (con nombre y email/telefono)
+// para que el frontend no tenga que hacer peticiones adicionales
 const getAppointments = async (req, res) => {
     try {
+        // Buscar todas las citas que pertenezcan a la barbería del usuario logueado
         const appointments = await Appointment.find({barberia: req.user.barberia})
+            // populate reemplaza el ObjectId por los datos reales del documento referenciado
             .populate('cliente', 'nombre telefono')
             .populate('barbero', 'nombre email');
         return res.json({appointments})
@@ -101,8 +106,12 @@ const getAppointments = async (req, res) => {
 
 }
 
+// Obtiene UNA sola cita por su ID
+// Solo devuelve la cita si pertenece a la barbería del usuario autenticado
+// (si otra barbería intenta acceder a esta cita, findOne no la encuentra)
 const getAppointmentById = async (req, res) => {
     try {
+        // Buscar por _id (viene en la URL como :id) Y por barberia (seguridad)
         const appointment = await Appointment.findOne({_id: req.params.id, barberia: req.user.barberia})
         if(!appointment){
             return res.status(404).json({message: "Cita no encontrada"});
@@ -115,6 +124,11 @@ const getAppointmentById = async (req, res) => {
     }
 }
 
+// Actualiza una cita existente
+// Recibe los campos a modificar en req.body y solo cambia esos
+// findOneAndUpdate busca por _id + barberia y aplica los cambios
+// { new: true } → devuelve el documento ya actualizado
+// { runValidators: true } → respeta las validaciones del modelo (required, enum, etc.)
 const updateAppointment = async (req, res) => {
     try {
         const appointment = await Appointment.findOneAndUpdate(
@@ -135,6 +149,9 @@ const updateAppointment = async (req, res) => {
     }
 }
 
+// Elimina una cita de la base de datos
+// findOneAndDelete es como findOneAndUpdate pero elimina en lugar de actualizar
+// Devuelve el documento eliminado (antes de borrarlo) para confirmar que existía
 const deleteAppointment = async (req, res) => {
     try {
         const appointment = await Appointment.findOneAndDelete(
