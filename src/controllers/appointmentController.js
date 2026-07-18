@@ -100,3 +100,17 @@ const getAppointments = async (req, res) => {
     }
 
 }
+
+const getAppointmentById = async (req, res) => {
+    try {
+        const appointment = await Appointment.findOne({_id: req.params.id, barberia: req.user.barberia})
+        if(!appointment){
+            return res(500).json({"error": "Cita no encontrada"});
+        }
+        
+        return res.json({appointment});
+        
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
