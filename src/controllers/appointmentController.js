@@ -135,4 +135,20 @@ const updateAppointment = async (req, res) => {
     }
 }
 
-module.exports = { createAppointment, getAppointments, getAppointmentById, updateAppointment };
+const deleteAppointment = async (req, res) => {
+    try {
+        const appointment = await Appointment.findOneAndDelete(
+            { _id: req.params.id, barberia: req.user.barberia }
+        );
+
+        if (!appointment) {
+            return res.status(404).json({ message: 'Cita no encontrada' });
+        }
+
+        return res.json({ message: 'Cita eliminada correctamente' });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { createAppointment, getAppointments, getAppointmentById, updateAppointment, deleteAppointment };
