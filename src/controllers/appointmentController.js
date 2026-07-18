@@ -105,12 +105,34 @@ const getAppointmentById = async (req, res) => {
     try {
         const appointment = await Appointment.findOne({_id: req.params.id, barberia: req.user.barberia})
         if(!appointment){
-            return res(500).json({"error": "Cita no encontrada"});
+            return res.status(404).json({message: "Cita no encontrada"});
         }
-        
+
         return res.json({appointment});
-        
+
     } catch (error) {
         return res.status(500).json({error: error.message});
     }
 }
+
+const updateAppointment = async (req, res) => {
+    try {
+        const appointment = await Appointment.findOneAndUpdate(
+            { _id: req.params.id, barberia: req.user.barberia },
+            req.body,
+            { new: true, runValidators: true }
+        )
+        .populate('cliente', 'nombre telefono')
+        .populate('barbero', 'nombre email');
+
+        if (!appointment) {
+            return res.status(404).json({ message: 'Cita no encontrada' });
+        }
+
+        return res.json(appointment);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { createAppointment, getAppointments, getAppointmentById, updateAppointment };
